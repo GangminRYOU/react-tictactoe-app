@@ -4,6 +4,7 @@ import ExpenseForm from "./components/ExpenseForm";
 import ExpenseList from "./components/ExpenseList";
 import "./Destructuring.js";
 import destructuringPractice from "./Destructuring.js";
+import Alert from "./components/Alert.js";
 
 const App = () => {
   destructuringPractice();
@@ -15,6 +16,8 @@ const App = () => {
     { id: 2, charge: "교통비", amount: 400 },
     { id: 3, charge: "식비", amount: 1200 }
   ])
+  const [alert, setAlert] = useState({show: false});
+
   // onXXX함수에 등록되면, Event 객체를 받아온다.
   const handleCharge = (event) => {
     console.log(event.target.value);
@@ -31,6 +34,7 @@ const App = () => {
     const newExpenses = expenses.filter(expense => expense.id !== id);
     console.log(newExpenses);
     setExpenses(newExpenses);
+    handleAlert({type: 'danger', text: '아이템이 삭제되었습니다.'})
   }
 
   const handleSubmit = (event) => {
@@ -43,13 +47,23 @@ const App = () => {
       /* submit후에 값 초기화 */
       setCharge("");
       setAmount(0);
+      handleAlert({type: 'success', text: '아이템이 생성되었습니다.'})
     } else {
       console.log('error!!!');
+      handleAlert({type: 'danger', text: 'charge는 빈 값일 수 없으며 amount는 0보다 커야 합니다.'})
     }
+  }
+
+  const handleAlert = ({type, text}) => {
+    setAlert({show: true, type: type, text: text});
+    setTimeout(() => {
+      setAlert({ show: false });
+    }, 7000);
   }
 
     return (
       <main className="main-container">
+        {alert.show ? <Alert type={alert.type} text={alert.text}/> : <></>}
         <h1>예산 계산기</h1>
         <div style={{width: '100%', backgroundColor: 'white', padding: '1rem'}}>
           {/* Expense Form */}
