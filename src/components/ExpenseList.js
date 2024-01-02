@@ -5,26 +5,29 @@ import { MdDelete } from 'react-icons/md';
 
 
 
-const ExpenseList = ({initialExpenses, handleDelete}) => {
-    console.log(initialExpenses);
+const ExpenseList = ({ expenses, handleDelete, handleEdit, clearItems }) => {
+    console.log(expenses);
     return (
       <>
         <ul className='list'>
           {/* Expense Item */}
-          {initialExpenses.map(expense => {
+          {expenses.map(expense => {
             return (
               <ExpenseItem 
                 expense={expense}
                 key={expense.id}
                 handleDelete={handleDelete}
+                handleEdit={handleEdit}
               />
             )
           })}
         </ul>
-        <button className='btn'>
+        {expenses.length > 0 && (
+          <button className='btn' onClick={clearItems}>
           목록 지우기
           <MdDelete className='btn-icon'/>
-        </button>
+          </button>
+        )}
       </>
     )
 }
